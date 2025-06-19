@@ -38,14 +38,10 @@ void runRepositoryTests({
       cleanup();
     });
 
-    runCrudTests(repositoryFactory: () => repository);
-
-    runBatchTests(repositoryFactory: () => repository);
-
-    runIdTests(repositoryFactory: () => repository);
-
-    runQueryTests(repositoryFactory: () => repository);
-
-    runStreamingTests(repositoryFactory: () => repository);
+    runRepositoryTests(
+      implementationName: implementationName, 
+      factoryProvider: () => factory, 
+      cleanup: cleanup,
+      );
   });
 }
