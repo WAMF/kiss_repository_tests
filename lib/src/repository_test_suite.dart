@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:kiss_repository_tests/src/auto_identify_tests.dart';
 import 'package:kiss_repository_tests/src/batch_tests.dart';
 import 'package:kiss_repository_tests/src/crud_tests.dart';
-import 'package:kiss_repository_tests/src/data/product_model.dart';
+import 'package:kiss_repository_tests/src/test_models.dart';
 import 'package:kiss_repository_tests/src/query_tests.dart';
 import 'package:kiss_repository_tests/src/streaming_tests.dart';
 

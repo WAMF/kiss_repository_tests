@@ -1,5 +1,5 @@
 import 'package:kiss_repository/kiss_repository.dart';
-import 'package:kiss_repository_tests/kiss_repository_tests.dart';
+import 'package:kiss_repository_tests/src/test_models.dart';
 import 'package:test/test.dart';
 
 /// Shared, framework-agnostic test logic for ID management functionality.

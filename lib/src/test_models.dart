@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:kiss_repository/kiss_repository.dart';
+
+/// Test data model for repository testing
 class ProductModel {
   const ProductModel({
     required this.id,
@@ -13,7 +16,7 @@ class ProductModel {
   ProductModel.create({required this.name, required this.price, this.description = ''})
     : id = '',
       created = DateTime.now();
-      
+
   final String id;
   final String name;
   final double price;
@@ -49,4 +52,31 @@ class ProductModel {
   int get hashCode {
     return id.hashCode ^ name.hashCode ^ price.hashCode ^ description.hashCode ^ created.hashCode;
   }
+}
+
+/// Query classes for ProductModel testing
+
+class QueryByName extends Query {
+  const QueryByName(this.namePrefix);
+  final String namePrefix;
+}
+
+class QueryByCreatedAfter extends Query {
+  const QueryByCreatedAfter(this.date);
+  final DateTime date;
+}
+
+class QueryByCreatedBefore extends Query {
+  const QueryByCreatedBefore(this.date);
+  final DateTime date;
+}
+
+class QueryByPriceGreaterThan extends Query {
+  const QueryByPriceGreaterThan(this.price);
+  final double price;
+}
+
+class QueryByPriceLessThan extends Query {
+  const QueryByPriceLessThan(this.price);
+  final double price;
 }
