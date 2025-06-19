@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:kiss_repository/kiss_repository.dart';
-import 'package:kiss_repository_tests/test.dart';
+import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 import 'package:test/test.dart' as test_pkg;
 
 class RepositoryTester {
@@ -11,12 +11,8 @@ class RepositoryTester {
   final RepositoryFactory factory;
   final void Function() tearDown;
 
-
   void run() {
-    runRepositoryTests(
-      implementationName: implementationName, 
-      factoryProvider: () => factory, cleanup: tearDown,
-      );
+    runRepositoryTests(implementationName: implementationName, factoryProvider: () => factory, cleanup: tearDown);
   }
 }
 

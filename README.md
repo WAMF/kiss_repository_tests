@@ -61,7 +61,7 @@ dev_dependencies:
 Implement the `RepositoryFactory` interface for your repository:
 
 ```dart
-import 'package:kiss_repository_tests/test.dart';
+import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 
 class MyRepositoryFactory implements RepositoryFactory {
   Repository<ProductModel>? _repository;
@@ -101,7 +101,7 @@ class MyRepositoryFactory implements RepositoryFactory {
 Create your test file following the standard pattern:
 
 ```dart
-import 'package:kiss_repository_tests/test.dart';
+import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 import 'package:test/test.dart';
 
 import 'factories/my_repository_factory.dart';

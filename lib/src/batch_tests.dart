@@ -1,7 +1,7 @@
 // ignore_for_file: cascade_invocations
 
 import 'package:kiss_repository/kiss_repository.dart';
-import 'package:kiss_repository_tests/test.dart';
+import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 import 'package:test/test.dart';
 
 /// Shared, framework-agnostic test logic for basic batch operations.

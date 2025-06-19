@@ -1,5 +1,5 @@
 import 'package:kiss_repository/kiss_repository.dart';
-import 'package:kiss_repository_tests/test.dart';
+import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 import 'package:test/test.dart';
 
 /// Shared, framework-agnostic test logic for basic query operations.
@@ -8,10 +8,10 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
     test('should query all items with AllQuery (default)', () async {
       final repository = repositoryFactory();
 
-      for (int i = 0; i < 3; i++) {
+      for (var i = 0; i < 3; i++) {
         final product = ProductModel.create(name: 'Product $i', price: 9.99);
         await repository.addAutoIdentified(product, updateObjectWithId: (object, id) => object.copyWith(id: id));
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
       final allObjects = await repository.query();
@@ -47,7 +47,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
       for (final obj in products) {
         await repository.addAutoIdentified(obj, updateObjectWithId: (object, id) => object.copyWith(id: id));
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
       final appleObjects = await repository.query(query: QueryByName('Apple'));
@@ -71,7 +71,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
       for (final obj in products) {
         await repository.addAutoIdentified(obj, updateObjectWithId: (object, id) => object.copyWith(id: id));
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
       final expensiveObjects = await repository.query(query: QueryByPriceGreaterThan(priceThreshold));
@@ -99,7 +99,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
       for (final obj in products) {
         await repository.addAutoIdentified(obj, updateObjectWithId: (object, id) => object.copyWith(id: id));
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
       final cheapObjects = await repository.query(query: QueryByPriceLessThan(priceThreshold));
