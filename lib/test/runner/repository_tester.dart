@@ -28,7 +28,6 @@ void runRepositoryTests({
   test_pkg.group('$implementationName Repository Tests', () {
     late RepositoryFactory factory;
     late Repository<ProductModel> repository;
-    final framework = DartTestFramework();
 
     test_pkg.setUpAll(() {
       factory = factoryProvider();
@@ -43,14 +42,14 @@ void runRepositoryTests({
       cleanup();
     });
 
-    runCrudTests(repositoryFactory: () => repository, framework: framework);
+    runCrudTests(repositoryFactory: () => repository);
 
-    runBatchTests(repositoryFactory: () => repository, framework: framework);
+    runBatchTests(repositoryFactory: () => repository);
 
-    runIdTests(repositoryFactory: () => repository, framework: framework);
+    runIdTests(repositoryFactory: () => repository);
 
-    runQueryTests(repositoryFactory: () => repository, framework: framework);
+    runQueryTests(repositoryFactory: () => repository);
 
-    runStreamingTests(repositoryFactory: () => repository, framework: framework);
+    runStreamingTests(repositoryFactory: () => repository);
   });
 }

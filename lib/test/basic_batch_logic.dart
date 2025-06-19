@@ -2,11 +2,12 @@
 
 import 'package:kiss_repository/kiss_repository.dart';
 import 'package:kiss_repository_tests/test.dart';
+import 'package:test/test.dart';
 
 /// Shared, framework-agnostic test logic for basic batch operations.
-void runBatchTests({required Repository<ProductModel> Function() repositoryFactory, required TestFramework framework}) {
-  framework.group('Basic Batch Operations', () {
-    framework.test('should add multiple items with addAll', () async {
+void runBatchTests({required Repository<ProductModel> Function() repositoryFactory}) {
+  group('Basic Batch Operations', () {
+    test('should add multiple items with addAll', () async {
       final repository = repositoryFactory();
 
       final products = [
@@ -22,18 +23,18 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
       final addedObjects = await repository.addAll(identifiedObjects);
       final addedObjectsList = addedObjects.toList();
 
-      framework.expect(addedObjectsList.length, framework.equals(3));
+      expect(addedObjectsList.length, equals(3));
       for (int i = 0; i < products.length; i++) {
-        framework.expect(addedObjectsList[i].id, framework.equals(identifiedObjects[i].id));
-        framework.expect(addedObjectsList[i].name, framework.equals(products[i].name));
+        expect(addedObjectsList[i].id, equals(identifiedObjects[i].id));
+        expect(addedObjectsList[i].name, equals(products[i].name));
 
         final retrieved = await repository.get(identifiedObjects[i].id);
-        framework.expect(retrieved.id, framework.equals(identifiedObjects[i].id));
-        framework.expect(retrieved.name, framework.equals(products[i].name));
+        expect(retrieved.id, equals(identifiedObjects[i].id));
+        expect(retrieved.name, equals(products[i].name));
       }
     });
 
-    framework.test('should update multiple items with updateAll', () async {
+    test('should update multiple items with updateAll', () async {
       final repository = repositoryFactory();
 
       final products = [
@@ -59,17 +60,17 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
       final updatedObjects = await repository.updateAll(identifiedUpdates);
       final updatedObjectsResult = updatedObjects.toList();
 
-      framework.expect(updatedObjectsResult.length, framework.equals(3));
+      expect(updatedObjectsResult.length, equals(3));
       for (int i = 0; i < createdObjects.length; i++) {
-        framework.expect(updatedObjectsResult[i].id, framework.equals(createdObjects[i].id));
-        framework.expect(updatedObjectsResult[i].name, framework.equals('${products[i].name} Updated'));
+        expect(updatedObjectsResult[i].id, equals(createdObjects[i].id));
+        expect(updatedObjectsResult[i].name, equals('${products[i].name} Updated'));
 
         final retrieved = await repository.get(createdObjects[i].id);
-        framework.expect(retrieved.name, framework.equals('${products[i].name} Updated'));
+        expect(retrieved.name, equals('${products[i].name} Updated'));
       }
     });
 
-    framework.test('should delete multiple items with deleteAll', () async {
+    test('should delete multiple items with deleteAll', () async {
       final repository = repositoryFactory();
 
       final products = [
@@ -91,7 +92,7 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
       // Verify they exist first
       for (final obj in createdObjects) {
         final retrieved = await repository.get(obj.id);
-        framework.expect(retrieved.id, framework.equals(obj.id));
+        expect(retrieved.id, equals(obj.id));
       }
 
       final deleteIds = createdObjects.map((obj) => obj.id).toList();
@@ -99,23 +100,23 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
 
       // Verify deletion
       for (final obj in createdObjects) {
-        framework.expect(() => repository.get(obj.id), framework.throwsA(framework.isA<RepositoryException>()));
+        expect(() => repository.get(obj.id), throwsA(isA<RepositoryException>()));
       }
     });
 
-    framework.test('should handle empty batch operations', () async {
+    test('should handle empty batch operations', () async {
       final repository = repositoryFactory();
 
       final emptyAddResult = await repository.addAll(<IdentifiedObject<ProductModel>>[]);
-      framework.expect(emptyAddResult, framework.isEmpty);
+      expect(emptyAddResult, isEmpty);
 
       final emptyUpdateResult = await repository.updateAll(<IdentifiedObject<ProductModel>>[]);
-      framework.expect(emptyUpdateResult, framework.isEmpty);
+      expect(emptyUpdateResult, isEmpty);
 
       await repository.deleteAll(<String>[]);
     });
 
-    framework.test('should fail entire batch atomically when any item conflicts', () async {
+    test('should fail entire batch atomically when any item conflicts', () async {
       final repository = repositoryFactory();
 
       // First create an existing object
@@ -134,24 +135,21 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
 
       final identifiedBatch = batchObjects.map((obj) => IdentifiedObject(obj.id, obj)).toList();
 
-      framework.expect(
-        () => repository.addAll(identifiedBatch),
-        framework.throwsA(framework.isA<RepositoryException>()),
-      );
+      expect(() => repository.addAll(identifiedBatch), throwsA(isA<RepositoryException>()));
 
       // Verify the original object is still there
       final retrieved = await repository.get(createdExisting.id);
-      framework.expect(retrieved.name, framework.equals('Existing Object'));
+      expect(retrieved.name, equals('Existing Object'));
 
       // Explicitly verify that none of the new items were added (atomic failure)
       for (final obj in batchObjects) {
         if (obj.id != createdExisting.id && obj.id.isNotEmpty) {
-          framework.expect(() => repository.get(obj.id), framework.throwsA(framework.isA<RepositoryException>()));
+          expect(() => repository.get(obj.id), throwsA(isA<RepositoryException>()));
         }
       }
     });
 
-    framework.test('should fail updateAll when any item has non-existent ID', () async {
+    test('should fail updateAll when any item has non-existent ID', () async {
       final repository = repositoryFactory();
 
       // Create one existing object
@@ -166,14 +164,11 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
         IdentifiedObject('non_existent_id', ProductModel.create(name: 'Updated Non-Existent', price: 9.99)),
       ];
 
-      framework.expect(
-        () => repository.updateAll(updateBatch),
-        framework.throwsA(framework.isA<RepositoryException>()),
-      );
+      expect(() => repository.updateAll(updateBatch), throwsA(isA<RepositoryException>()));
 
       // Verify the existing object was not modified (atomic failure)
       final retrieved = await repository.get(existingObject.id);
-      framework.expect(retrieved.name, framework.equals('Existing Object'));
+      expect(retrieved.name, equals('Existing Object'));
     });
   });
 }
