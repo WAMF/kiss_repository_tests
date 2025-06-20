@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 // Factory interface that each repository implementation must provide
 abstract class RepositoryFactory<T> {
-  Repository<T> createRepository();
+  Future<Repository<T>> createRepository();
 
   Future<void> cleanup();
 
@@ -29,9 +29,9 @@ void runRepositoryTests({
     late RepositoryFactory<ProductModel> factory;
     late Repository<ProductModel> repository;
 
-    setUpAll(() {
+    setUpAll(() async {
       factory = factoryProvider();
-      repository = factory.createRepository();
+      repository = await factory.createRepository();
     });
 
     setUp(() async {
