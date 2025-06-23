@@ -28,8 +28,8 @@ The KISS Repository Tests package provides:
 Each repository implementation provides a factory that implements the `RepositoryFactory` interface:
 
 ```dart
-abstract class RepositoryFactory {
-  Repository<ProductModel> createRepository();
+abstract class RepositoryFactory<T> {
+  Future<Repository<T>> createRepository();
   Future<void> cleanup();
   void dispose();
 }
@@ -39,9 +39,9 @@ abstract class RepositoryFactory {
 
 The testing framework provides:
 
-- **`RepositoryTester`**: Main test runner that executes all test suites
-- **`TestFramework`**: Abstraction for different test frameworks (currently supports Dart's `test` package)
+- **`runRepositoryTests`**: Main test runner function that executes all test suites
 - **Test Logic Modules**: Separate modules for different aspects (CRUD, batch, query, streaming, ID management)
+- **Shared Test Models**: Common test data models used across all implementations
 
 ## Getting Started
 
@@ -63,7 +63,7 @@ Implement the `RepositoryFactory` interface for your repository:
 ```dart
 import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 
-class MyRepositoryFactory implements RepositoryFactory {
+class MyRepositoryFactory implements RepositoryFactory<ProductModel> {
   Repository<ProductModel>? _repository;
   
   static Future<void> initialize() async {
@@ -71,7 +71,7 @@ class MyRepositoryFactory implements RepositoryFactory {
   }
 
   @override
-  Repository<ProductModel> createRepository() {
+  Future<Repository<ProductModel>> createRepository() async {
     _repository = MyRepository<ProductModel>(
       // your repository configuration
     );
@@ -102,26 +102,22 @@ Create your test file following the standard pattern:
 
 ```dart
 import 'package:kiss_repository_tests/kiss_repository_tests.dart';
-import 'package:test/test.dart';
 
 import 'factories/my_repository_factory.dart';
 
 void main() {
-  setUpAll(() async {
-    await MyRepositoryFactory.initialize();
-  });
-
-  final factory = MyRepositoryFactory();
-  final tester = RepositoryTester('MyRepository', factory, () {});
-
-  tester.run();
+  runRepositoryTests(
+    implementationName: 'MyRepository',
+    factoryProvider: () => MyRepositoryFactory(),
+    cleanup: () {},
+  );
 }
 ```
 
 ### 4. Run Tests
 
 ```bash
-dart test test/integration/all_integration_tests.dart
+dart test
 ```
 
 ## Usage
@@ -132,8 +128,8 @@ This testing framework can be used with any repository implementation that follo
 
 When adding new test scenarios:
 
-1. Add the test logic to the appropriate module in `lib/test/`
-2. Update the `RepositoryTester` to include the new test
+1. Add the test logic to the appropriate module in `lib/src/`
+2. Update the `runRepositoryTests` function to include the new test
 3. Ensure all existing implementations still pass
 4. Document any new requirements for factory implementations
 
