@@ -19,12 +19,12 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
       final streamFuture = stream.take(3).toList();
 
       // Give time for the subscription to be fully established
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
 
       // Make updates with delays to ensure they are processed separately
       await repository.update(createdObject.id, (current) => current.copyWith(name: 'Updated Name 1'));
 
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
 
       await repository.update(createdObject.id, (current) => current.copyWith(name: 'Updated Name 2'));
 
@@ -43,7 +43,7 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
       final stream = repository.streamQuery();
       final streamFuture = stream.take(4).toList();
 
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
 
       // Add first object
       final object1 = ProductModel.create(name: 'Product 1', price: 9.99);
@@ -99,9 +99,9 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
       final stream = repository.stream(createdObject.id);
       final emissions = <ProductModel>[];
       final subscription = stream.listen((obj) => emissions.add(obj));
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
       await repository.delete(createdObject.id);
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
       await subscription.cancel();
 
       expect(emissions.length, equals(1));
