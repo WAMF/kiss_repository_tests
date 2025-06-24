@@ -61,16 +61,6 @@ class QueryByName extends Query {
   final String namePrefix;
 }
 
-class QueryByCreatedAfter extends Query {
-  const QueryByCreatedAfter(this.date);
-  final DateTime date;
-}
-
-class QueryByCreatedBefore extends Query {
-  const QueryByCreatedBefore(this.date);
-  final DateTime date;
-}
-
 class QueryByPriceGreaterThan extends Query {
   const QueryByPriceGreaterThan(this.price);
   final double price;

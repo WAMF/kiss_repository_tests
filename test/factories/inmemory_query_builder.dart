@@ -18,14 +18,6 @@ class InMemoryProductQueryBuilder implements QueryBuilder<InMemoryFilterQuery<Pr
       return InMemoryFilterQuery<ProductModel>((product) => product.price < query.price);
     }
 
-    if (query is QueryByCreatedAfter) {
-      return InMemoryFilterQuery<ProductModel>((product) => product.created.isAfter(query.date));
-    }
-
-    if (query is QueryByCreatedBefore) {
-      return InMemoryFilterQuery<ProductModel>((product) => product.created.isBefore(query.date));
-    }
-
     // Default: return all products
     return InMemoryFilterQuery<ProductModel>((product) => true);
   }

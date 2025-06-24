@@ -1,6 +1,6 @@
 name: kiss_repository_tests
-description: A starting point for Dart libraries or applications.
-version: 0.1.0
+description: Tests for kiss_repository package
+version: 0.1.1
 repository: https://github.com/WAMF/kiss_repository_tests
 
 environment:
