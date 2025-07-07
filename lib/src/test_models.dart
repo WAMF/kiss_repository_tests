@@ -61,12 +61,22 @@ class QueryByName extends Query {
   final String namePrefix;
 }
 
-class QueryByPriceGreaterThan extends Query {
-  const QueryByPriceGreaterThan(this.price);
-  final double price;
-}
+class QueryByPriceRange extends Query {
+  const QueryByPriceRange({this.minPrice, this.maxPrice});
+  final double? minPrice;
+  final double? maxPrice;
 
-class QueryByPriceLessThan extends Query {
-  const QueryByPriceLessThan(this.price);
-  final double price;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is QueryByPriceRange &&
+          runtimeType == other.runtimeType &&
+          minPrice == other.minPrice &&
+          maxPrice == other.maxPrice;
+
+  @override
+  int get hashCode => minPrice.hashCode ^ maxPrice.hashCode;
+
+  @override
+  String toString() => 'QueryByPriceRange(minPrice: $minPrice, maxPrice: $maxPrice)';
 }

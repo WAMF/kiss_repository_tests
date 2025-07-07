@@ -74,7 +74,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
-      final expensiveObjects = await repository.query(query: QueryByPriceGreaterThan(priceThreshold));
+      final expensiveObjects = await repository.query(query: QueryByPriceRange(minPrice: priceThreshold));
       expect(expensiveObjects.length, equals(2));
 
       final names = expensiveObjects.map((obj) => obj.name).toSet();
@@ -102,7 +102,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
-      final cheapObjects = await repository.query(query: QueryByPriceLessThan(priceThreshold));
+      final cheapObjects = await repository.query(query: QueryByPriceRange(maxPrice: priceThreshold));
       expect(cheapObjects.length, equals(2));
 
       final names = cheapObjects.map((obj) => obj.name).toSet();
@@ -113,6 +113,37 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         expect(obj.price < priceThreshold, isTrue);
       }
       print('✅ Queried objects by price less than threshold successfully');
+    });
+
+    test('should query by price range (both min and max)', () async {
+      final repository = repositoryFactory();
+      final minPrice = 10.0;
+      final maxPrice = 25.0;
+      final products = [
+        ProductModel.create(name: 'Too Cheap Product', price: 5.99),
+        ProductModel.create(name: 'In Range Product 1', price: 15.99),
+        ProductModel.create(name: 'In Range Product 2', price: 20.99),
+        ProductModel.create(name: 'Too Expensive Product', price: 35.99),
+      ];
+
+      for (final obj in products) {
+        await repository.addAutoIdentified(obj, updateObjectWithId: (object, id) => object.copyWith(id: id));
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+
+      final rangeObjects = await repository.query(
+        query: QueryByPriceRange(minPrice: minPrice, maxPrice: maxPrice),
+      );
+      expect(rangeObjects.length, equals(2));
+
+      final names = rangeObjects.map((obj) => obj.name).toSet();
+      expect(names, contains('In Range Product 1'));
+      expect(names, contains('In Range Product 2'));
+
+      for (final obj in rangeObjects) {
+        expect(obj.price >= minPrice && obj.price <= maxPrice, isTrue);
+      }
+      print('✅ Queried objects by price range successfully');
     });
 
     test('should handle query with no results', () async {
