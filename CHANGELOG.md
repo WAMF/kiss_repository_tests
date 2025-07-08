@@ -1,4 +1,4 @@
-## 0.1.1
+## 0.2.0 (Breaking)
 
 - Add delays between streaming test operations to ensure distinct processing
 - Reduce streaming test timeout from 15s to 2s for faster test execution
