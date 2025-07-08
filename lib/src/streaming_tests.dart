@@ -52,14 +52,20 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
         updateObjectWithId: (object, id) => object.copyWith(id: id),
       );
 
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
       // Add second object
       final object2 = ProductModel.create(name: 'Product 2', price: 9.99);
       await repository.addAutoIdentified(object2, updateObjectWithId: (object, id) => object.copyWith(id: id));
 
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
       // Update first object
       await repository.update(createdObject1.id, (current) => current.copyWith(name: 'Updated Product 1'));
 
-      final emissions = await streamFuture.timeout(Duration(seconds: 15));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
+      final emissions = await streamFuture.timeout(Duration(seconds: 2));
 
       expect(emissions.length, equals(4));
       expect(emissions[0].length, equals(0));
