@@ -28,7 +28,7 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
 
       await repository.update(createdObject.id, (current) => current.copyWith(name: 'Updated Name 2'));
 
-      final emissions = await streamFuture.timeout(Duration(seconds: 15));
+      final emissions = await streamFuture.timeout(const Duration(seconds: 15));
 
       expect(emissions.length, equals(3));
       expect(emissions[0].name, equals('Initial Name'));
@@ -65,7 +65,7 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
 
       await Future<void>.delayed(const Duration(milliseconds: 20));
 
-      final emissions = await streamFuture.timeout(Duration(seconds: 2));
+      final emissions = await streamFuture.timeout(const Duration(seconds: 2));
 
       expect(emissions.length, equals(4));
       expect(emissions[0].length, equals(0));
@@ -104,7 +104,7 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
       );
       final stream = repository.stream(createdObject.id);
       final emissions = <ProductModel>[];
-      final subscription = stream.listen((obj) => emissions.add(obj));
+      final subscription = stream.listen(emissions.add);
       await Future<void>.delayed(const Duration(milliseconds: 500));
       await repository.delete(createdObject.id);
       await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -123,7 +123,7 @@ void runStreamingTests({required Repository<ProductModel> Function() repositoryF
         updateObjectWithId: (object, id) => object.copyWith(id: id),
       );
       final stream = repository.stream(createdObject.id);
-      final firstEmission = await stream.first.timeout(Duration(seconds: 10));
+      final firstEmission = await stream.first.timeout(const Duration(seconds: 10));
 
       expect(firstEmission.name, equals('Immediate Object'));
       expect(firstEmission.id, equals(createdObject.id));

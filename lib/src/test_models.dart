@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:kiss_repository/kiss_repository.dart';
+import 'package:meta/meta.dart';
 
 /// Test data model for repository testing
+@immutable
 class ProductModel {
   const ProductModel({
     required this.id,
@@ -13,9 +15,12 @@ class ProductModel {
   });
 
   /// Create a new ProductModel without an ID (for adding to repository)
-  ProductModel.create({required this.name, required this.price, this.description = ''})
-    : id = '',
-      created = DateTime.now();
+  ProductModel.create({
+    required this.name,
+    required this.price,
+    this.description = '',
+  }) : id = '',
+       created = DateTime.now();
 
   final String id;
   final String name;
@@ -23,7 +28,13 @@ class ProductModel {
   final String description;
   final DateTime created;
 
-  ProductModel copyWith({String? id, String? name, double? price, String? description, DateTime? created}) {
+  ProductModel copyWith({
+    String? id,
+    String? name,
+    double? price,
+    String? description,
+    DateTime? created,
+  }) {
     return ProductModel(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -50,7 +61,11 @@ class ProductModel {
 
   @override
   int get hashCode {
-    return id.hashCode ^ name.hashCode ^ price.hashCode ^ description.hashCode ^ created.hashCode;
+    return id.hashCode ^
+        name.hashCode ^
+        price.hashCode ^
+        description.hashCode ^
+        created.hashCode;
   }
 }
 
@@ -61,6 +76,7 @@ class QueryByName extends Query {
   final String namePrefix;
 }
 
+@immutable
 class QueryByPriceRange extends Query {
   const QueryByPriceRange({this.minPrice, this.maxPrice});
   final double? minPrice;
@@ -78,5 +94,6 @@ class QueryByPriceRange extends Query {
   int get hashCode => minPrice.hashCode ^ maxPrice.hashCode;
 
   @override
-  String toString() => 'QueryByPriceRange(minPrice: $minPrice, maxPrice: $maxPrice)';
+  String toString() =>
+      'QueryByPriceRange(minPrice: $minPrice, maxPrice: $maxPrice)';
 }

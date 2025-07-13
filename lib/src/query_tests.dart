@@ -50,7 +50,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
-      final appleObjects = await repository.query(query: QueryByName('Apple'));
+      final appleObjects = await repository.query(query: const QueryByName('Apple'));
       expect(appleObjects.length, equals(2));
 
       final names = appleObjects.map((obj) => obj.name).toList();
@@ -61,7 +61,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
     test('should query by price greater than threshold', () async {
       final repository = repositoryFactory();
-      final priceThreshold = 15.0;
+      const priceThreshold = 15.0;
       final products = [
         ProductModel.create(name: 'Cheap Product 1', price: 5.99),
         ProductModel.create(name: 'Cheap Product 2', price: 12.99),
@@ -74,7 +74,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
-      final expensiveObjects = await repository.query(query: QueryByPriceRange(minPrice: priceThreshold));
+      final expensiveObjects = await repository.query(query: const QueryByPriceRange(minPrice: priceThreshold));
       expect(expensiveObjects.length, equals(2));
 
       final names = expensiveObjects.map((obj) => obj.name).toSet();
@@ -89,7 +89,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
     test('should query by price less than threshold', () async {
       final repository = repositoryFactory();
-      final priceThreshold = 15.0;
+      const priceThreshold = 15.0;
       final products = [
         ProductModel.create(name: 'Cheap Product 1', price: 5.99),
         ProductModel.create(name: 'Cheap Product 2', price: 12.99),
@@ -102,7 +102,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
 
-      final cheapObjects = await repository.query(query: QueryByPriceRange(maxPrice: priceThreshold));
+      final cheapObjects = await repository.query(query: const QueryByPriceRange(maxPrice: priceThreshold));
       expect(cheapObjects.length, equals(2));
 
       final names = cheapObjects.map((obj) => obj.name).toSet();
@@ -117,8 +117,8 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
 
     test('should query by price range (both min and max)', () async {
       final repository = repositoryFactory();
-      final minPrice = 10.0;
-      final maxPrice = 25.0;
+      const minPrice = 10.0;
+      const maxPrice = 25.0;
       final products = [
         ProductModel.create(name: 'Too Cheap Product', price: 5.99),
         ProductModel.create(name: 'In Range Product 1', price: 15.99),
@@ -132,7 +132,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
       }
 
       final rangeObjects = await repository.query(
-        query: QueryByPriceRange(minPrice: minPrice, maxPrice: maxPrice),
+        query: const QueryByPriceRange(minPrice: minPrice, maxPrice: maxPrice),
       );
       expect(rangeObjects.length, equals(2));
 
@@ -155,7 +155,7 @@ void runQueryTests({required Repository<ProductModel> Function() repositoryFacto
       for (final obj in products) {
         await repository.addAutoIdentified(obj, updateObjectWithId: (object, id) => object.copyWith(id: id));
       }
-      final noResults = await repository.query(query: QueryByName('NonExistent'));
+      final noResults = await repository.query(query: const QueryByName('NonExistent'));
       expect(noResults, isEmpty);
       print('✅ Handled query with no results correctly');
     });
