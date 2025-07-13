@@ -1,3 +1,9 @@
+## 0.2.1
+
+- Fix all analyzer warnings (23 issues resolved)
+- Update tests for kiss_repository v0.12.0 interface change: delete now throws exception for non-existent records
+- Add analysis_options.yaml rules to ignore print statements and documentation requirements for test package
+
 ## 0.2.0 (Breaking)
 
 - Add delays between streaming test operations to ensure distinct processing
