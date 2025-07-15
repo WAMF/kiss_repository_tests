@@ -1,3 +1,11 @@
+## 0.3.0
+
+- **New Feature**: Add selective test suite execution with `TestSuiteConfig`
+- Add predefined configurations: `all()`, `basicOnly()`, `withoutStreaming()`, `crudAndBatch()`
+- Support custom test suite selection (CRUD, batch, ID management, query, streaming)
+- Maintain backward compatibility - existing code continues to work unchanged
+- Update documentation with configuration examples for repositories without streaming support
+
 ## 0.2.1
 
 - Fix all analyzer warnings (23 issues resolved)
