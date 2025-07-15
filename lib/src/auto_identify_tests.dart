@@ -129,7 +129,7 @@ void runIdTests({required Repository<ProductModel> Function() repositoryFactory}
       }
 
       // Verify objects can be retrieved
-      for (int i = 0; i < identifiedObjects.length; i++) {
+      for (var i = 0; i < identifiedObjects.length; i++) {
         final retrieved = await repository.get(identifiedObjects[i].id);
         expect(retrieved.name, equals(productModels[i].name));
       }

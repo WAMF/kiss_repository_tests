@@ -3,11 +3,16 @@ import 'package:kiss_repository_tests/src/test_models.dart';
 import 'package:test/test.dart';
 
 // ignore: public_member_api_docs
-void runCrudTests({required Repository<ProductModel> Function() repositoryFactory}) {
+void runCrudTests({
+  required Repository<ProductModel> Function() repositoryFactory,
+}) {
   group('Basic CRUD Operations', () {
     test('should perform complete CRUD lifecycle', () async {
       final repository = repositoryFactory();
-      final productModel = ProductModel.create(name: 'Sample Product', price: 9.99);
+      final productModel = ProductModel.create(
+        name: 'Sample Product',
+        price: 9.99,
+      );
 
       // CREATE
       final createdObject = await repository.addAutoIdentified(
@@ -32,47 +37,68 @@ void runCrudTests({required Repository<ProductModel> Function() repositoryFactor
 
       // DELETE
       await repository.delete(savedObject.id);
-      expect(() => repository.get(savedObject.id), throwsA(isA<RepositoryException>()));
+      expect(
+        () => repository.get(savedObject.id),
+        throwsA(isA<RepositoryException>()),
+      );
     });
 
     test('should throw exception when getting non-existent record', () async {
       final repository = repositoryFactory();
-      expect(() => repository.get('non_existent_id'), throwsA(isA<RepositoryException>()));
+      expect(
+        () => repository.get('non_existent_id'),
+        throwsA(isA<RepositoryException>()),
+      );
     });
 
     test('should throw exception when updating non-existent record', () async {
       final repository = repositoryFactory();
       expect(
-        () => repository.update('non_existent_id', (current) => current.copyWith(name: 'Updated')),
+        () => repository.update(
+          'non_existent_id',
+          (current) => current.copyWith(name: 'Updated'),
+        ),
         throwsA(isA<RepositoryException>()),
       );
     });
 
-    test('should allow deleting non-existent record without error', () async {
+    test('should throw exception when deleting non-existent record', () async {
       final repository = repositoryFactory();
-      // Delete should succeed gracefully for non-existent records
-      await repository.delete('non_existent_id');
-    });
-
-    test('should handle deleteAll with mix of existing and non-existent IDs', () async {
-      final repository = repositoryFactory();
-
-      // Create a test object
-      final productModel = ProductModel.create(name: 'Sample Product', price: 9.99);
-      final createdObject = await repository.addAutoIdentified(
-        productModel,
-        updateObjectWithId: (object, id) => object.copyWith(id: id),
+      // Delete should now throw exception for non-existent records
+      expect(
+        () => repository.delete('non_existent_id'),
+        throwsA(isA<RepositoryException>()),
       );
-
-      // Delete mix of existing and non-existing IDs - should succeed gracefully
-      await repository.deleteAll([
-        createdObject.id, // exists
-        'non_existent_1', // doesn't exist
-        'non_existent_2', // doesn't exist
-      ]);
-
-      // Verify the existing object was actually deleted
-      expect(() => repository.get(createdObject.id), throwsA(isA<RepositoryException>()));
     });
+
+    test(
+      'should handle deleteAll with mix of existing and non-existent IDs',
+      () async {
+        final repository = repositoryFactory();
+
+        // Create a test object
+        final productModel = ProductModel.create(
+          name: 'Sample Product',
+          price: 9.99,
+        );
+        final createdObject = await repository.addAutoIdentified(
+          productModel,
+          updateObjectWithId: (object, id) => object.copyWith(id: id),
+        );
+
+        // Delete mix of existing and non-existing IDs - should succeed gracefully
+        await repository.deleteAll([
+          createdObject.id, // exists
+          'non_existent_1', // doesn't exist
+          'non_existent_2', // doesn't exist
+        ]);
+
+        // Verify the existing object was actually deleted
+        expect(
+          () => repository.get(createdObject.id),
+          throwsA(isA<RepositoryException>()),
+        );
+      },
+    );
   });
 }

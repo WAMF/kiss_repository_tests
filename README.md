@@ -110,6 +110,8 @@ void main() {
     implementationName: 'MyRepository',
     factoryProvider: () => MyRepositoryFactory(),
     cleanup: () {},
+    // Optional: configure which test suites to run
+    config: const TestSuiteConfig.all(), // Default - runs all tests
   );
 }
 ```
@@ -118,6 +120,64 @@ void main() {
 
 ```bash
 dart test
+```
+
+## Test Suite Configuration
+
+The framework allows you to selectively run test suites based on what your repository implementation supports:
+
+### Predefined Configurations
+
+```dart
+// Run all test suites (default behavior)
+config: const TestSuiteConfig.all()
+
+// Run only basic CRUD operations
+config: const TestSuiteConfig.basicOnly()
+
+// Run all tests except streaming (for repositories without real-time features)
+config: const TestSuiteConfig.withoutStreaming()
+
+// Run only CRUD and batch operations
+config: const TestSuiteConfig.crudAndBatch()
+```
+
+### Custom Configuration
+
+```dart
+config: const TestSuiteConfig(
+  runCrudTests: true,      // Basic CRUD operations
+  runBatchTests: true,     // Bulk operations (addAll, updateAll, deleteAll)
+  runIdTests: true,        // ID management and auto-generation
+  runQueryTests: true,     // Query system testing
+  runStreamingTests: false, // Real-time streaming (disable if not supported)
+)
+```
+
+### Common Use Cases
+
+**For repositories without streaming support:**
+```dart
+void main() {
+  runRepositoryTests(
+    implementationName: 'MyRepository',
+    factoryProvider: () => MyRepositoryFactory(),
+    cleanup: () {},
+    config: const TestSuiteConfig.withoutStreaming(),
+  );
+}
+```
+
+**For basic implementations:**
+```dart
+void main() {
+  runRepositoryTests(
+    implementationName: 'MyRepository',
+    factoryProvider: () => MyRepositoryFactory(),
+    cleanup: () {},
+    config: const TestSuiteConfig.basicOnly(),
+  );
+}
 ```
 
 ## Usage

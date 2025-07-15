@@ -24,7 +24,7 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
       final addedObjectsList = addedObjects.toList();
 
       expect(addedObjectsList.length, equals(3));
-      for (int i = 0; i < products.length; i++) {
+      for (var i = 0; i < products.length; i++) {
         expect(addedObjectsList[i].id, equals(identifiedObjects[i].id));
         expect(addedObjectsList[i].name, equals(products[i].name));
 
@@ -61,7 +61,7 @@ void runBatchTests({required Repository<ProductModel> Function() repositoryFacto
       final updatedObjectsResult = updatedObjects.toList();
 
       expect(updatedObjectsResult.length, equals(3));
-      for (int i = 0; i < createdObjects.length; i++) {
+      for (var i = 0; i < createdObjects.length; i++) {
         expect(updatedObjectsResult[i].id, equals(createdObjects[i].id));
         expect(updatedObjectsResult[i].name, equals('${products[i].name} Updated'));
 
