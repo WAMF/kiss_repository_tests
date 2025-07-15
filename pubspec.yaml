@@ -1,6 +1,6 @@
 name: kiss_repository_tests
 description: Tests for kiss_repository package
-version: 0.2.0
+version: 0.2.1
 repository: https://github.com/WAMF/kiss_repository_tests
 
 environment:
