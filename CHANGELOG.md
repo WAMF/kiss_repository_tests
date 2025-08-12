@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Update kiss_repository dependency to ^0.14.0
+
 ## 0.3.0
 
 - **New Feature**: Add selective test suite execution with `TestSuiteConfig`
