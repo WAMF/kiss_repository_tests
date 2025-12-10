@@ -1,6 +1,7 @@
 ## 0.3.2
 
 - Update kiss_repository dependency to ^0.16.0
+- Update test dependency to ^1.28.0
 - Update very_good_analysis to ^10.0.0
 - Remove unnecessary ignore directives for stricter linting
 
