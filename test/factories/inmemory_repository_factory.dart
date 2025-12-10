@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:kiss_repository/kiss_repository.dart';
 import 'package:kiss_repository_tests/kiss_repository_tests.dart';
 
@@ -36,7 +34,7 @@ class InMemoryRepositoryFactory implements RepositoryFactory<ProductModel> {
       } else {
         print('🧹 Cleanup: Repository already empty');
       }
-    } catch (e) {
+    } on Exception catch (e) {
       print('❌ Cleanup failed: $e');
     }
   }

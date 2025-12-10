@@ -2,7 +2,6 @@ import 'package:kiss_repository/kiss_repository.dart';
 import 'package:kiss_repository_tests/src/test_models.dart';
 import 'package:test/test.dart';
 
-// ignore: public_member_api_docs
 void runCrudTests({
   required Repository<ProductModel> Function() repositoryFactory,
 }) {
