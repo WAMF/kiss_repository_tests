@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:kiss_repository/kiss_repository.dart';
 import 'package:kiss_repository_tests/src/test_models.dart';
 import 'package:test/test.dart';

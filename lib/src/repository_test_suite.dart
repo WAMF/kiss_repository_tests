@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:kiss_repository/kiss_repository.dart';
 import 'package:kiss_repository_tests/src/auto_identify_tests.dart';
 import 'package:kiss_repository_tests/src/batch_tests.dart';
